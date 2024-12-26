@@ -1,0 +1,31 @@
+{
+  "name": "elonlar-doskasi",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "dev": "node server.js"
+  },
+  "author": "Sherzod Tokhirov",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "connect-mongodb-session": "^5.0.0",
+    "daisyui": "^4.12.14",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-handlebars": "^8.0.1",
+    "express-session": "^1.18.1",
+    "mongodb": "^6.10.0",
+    "mongoose": "^8.8.0",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^11.0.2"
+  },
+  "devDependencies": {
+    "jsdoc": "^4.0.4",
+    "nodemon": "^3.1.7",
+    "tailwindcss": "^3.4.14"
+  }
+}
