@@ -12,7 +12,10 @@ const getProfilePage = async(req,res)=>{
             throw new Error("Bunday foydalanuvchi mavjud emas ❌");
         }
         
-        const isMe = userProfile._id == req.session.user._id.toString();
+        let isMe = false;
+        if(req.session.user){
+            isMe = userProfile._id == req.session.user._id.toString();
+        }
         console.log(req.session.user);
         res.render('user/profile', {
             title: `${userProfile.username}`,

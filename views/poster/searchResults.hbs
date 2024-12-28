@@ -9,11 +9,11 @@
             <div class="col-12 mb-3">
                 <label for="search" class="visually-hidden">Qidiruv</label>
                 <input 
-                    name="search" 
                     type="text" 
                     class="form-control form-control-lg rounded-pill" 
                     id="search" 
                     placeholder="E'lonlar qidiruvi..."
+                    name="search"
                     value="{{querySearch}}"
                     >
             </div>
@@ -45,7 +45,7 @@
             <!-- Region Filter -->
             <div class="col-md-4">
                 <label for="region" class="form-label">Hudud</label>
-               <select class="form-select rounded-pill" id="region" name="region">
+                <select class="form-select rounded-pill" id="region" name="region">
                     <option selected disabled>Hududni tanlang</option>
                     <option value="Toshkent">Toshkent</option>
                     <option value="Qarshi">Qarshi</option>
@@ -82,10 +82,10 @@
         <div class="row">
             {{#if posters}}
                 {{#each posters}}
-                    <div class="card mb-3 fade show">
+                    <div class="card mb-3">
                         <div class="row g-0">
                             <div class="col-md-3">
-                            <a href="/posters/{{_id}}"><img src="{{../url}}{{image}}" style="height: 300px; object-fit: cover" class="img-fluid rounded-start img-board" alt="..."></a>
+                            <a href="/posters/{{_id}}"><img src="{{../url}}{{image}}" class="img-fluid rounded-start img-board" alt="..."></a>
                             </div>
                             <div class="col-md-9">
                             <div class="card-body flex-poster-body">
@@ -95,7 +95,7 @@
                                 </a></div>
                                 <h5 class="title-item-two">{{amount}}</h5>
                                 </div>
-                                <div><p class="card-text"><small class="text-muted">{{region}} - {{formatDate createdAt}}</small></p></div>
+                                <div><p class="card-text"><small class="text-muted">{{region}} - 11.07.2021 16:45</small></p></div>
                             </div>
                             </div>
                         </div>
@@ -103,38 +103,6 @@
                 {{/each}}
             {{else}}
                 <h2>E'lonlar mavjud emas</h2>
-            {{/if}}
-            
-
-            {{#if posters}}
-            <nav class="my-4">
-                <ul class="pagination pagination-lg justify-content-center">
-                    <!-- Previous button -->
-                    <li class="page-item">
-                        <a class="page-link rounded-pill" href="#" tabindex="-1" aria-disabled="true">
-                            <i class="bi bi-arrow-left"></i> Previous
-                        </a>
-                    </li>
-
-                    <!-- Page numbers -->
-                    <li class="page-item active">
-                        <a class="page-link rounded-pill bg-primary text-white border-0 shadow-sm" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link rounded-pill" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link rounded-pill" href="#">3</a>
-                    </li>
-
-                    <!-- Next button -->
-                    <li class="page-item">
-                        <a class="page-link rounded-pill" href="#">
-                            Next <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
             {{/if}}
         </div>
     </div>

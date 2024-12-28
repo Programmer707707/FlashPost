@@ -1,19 +1,42 @@
 const {v4} = require('uuid')
 const Poster = require('../models/posterModel');
 const User = require('../models/userModel');
+const filtering = require('../utils/filtering');
+
 //@route        GET/
 //@desc         Get posters page
 //@access       Public
 const getPosters = async (req,res) => {
     try{
         if(req.query.search){
-            const searchResults = await Poster.find({title: req.query.search}).lean();
-            console.log(searchResults);
+            const {search} = req.query;
+            const posters = await Poster.searchPartial(search); 
+
+            return res.status(200).render('poster/searchResults', {
+                title: 'Search Results',
+                posters: posters.map(poster => poster.toObject()).reverse(),
+                user: req.session.user,
+                querySearch: req.query.search,
+                url: process.env.URL,
+            })
+        }
+
+        if(req.query){
+            const {category, from, to, region} = req.query;
+            const filterings = filtering(category, from, to, region);
+            const posters = await Poster.find(filterings).lean();
+            return res.render('poster/searchResults', {
+                title: 'Filter Results',
+                posters: posters.reverse(),
+                querySearch: req.query.search,
+                user: req.session.user,
+                url: process.env.URL,
+            })
         }
 
 
         const posters = await Poster.find().lean() // .lean() for security used only in handlebars
-        res.render('poster/posters', {
+        return res.render('poster/posters', {
             title: 'Poster Page',
             posters: posters.reverse(),
             user: req.session.user,

@@ -16,7 +16,11 @@
             <p class="text-muted" style="font-size: 1.1rem;">
                 Bu sayt orqali siz o'z e'lonlaringizni bepul joylashtirib borishingiz mumkin. Istalgan kategoriyangizni tanlang va e'loningizni joylashtiring.
             </p>
-            <a class="btn btn-primary btn-lg px-4 rounded-pill mt-3" href="posters/add">E'lon joylashtirish</a>
+            {{#if user}}
+                <a class="btn btn-primary btn-lg px-4 rounded-pill mt-3" href="posters/add">E'lon joylashtirish</a>
+            {{else}}
+                <a class="btn btn-primary btn-lg px-4 rounded-pill mt-3" href="/auth/login">Tizimga kirish</a>
+            {{/if}}
         </div>
     </div>
 
@@ -25,25 +29,28 @@
 
     <!-- Call to Action-->
     
-   <div class="card my-5 py-4 text-center shadow-sm border-0 rounded-4">
-    <div class="card-body">
-        <form class="row g-2 justify-content-center" action="/posters" method="GET">
-            <div class="col-md-8">
-                <label for="search" class="visually-hidden">Qidiruv</label>
-                <input 
-                    type="text" 
-                    class="form-control form-control-lg rounded-pill" 
-                    id="search" 
-                    placeholder="E'lonlar qidiruvi..."
-                    name="search"
-                    >
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary btn-lg rounded-pill px-4">Izlash</button>
-            </div>
-        </form>
+   {{#if user}}
+    <div class="card my-5 py-4 text-center shadow-sm border-0 rounded-4">
+        <div class="card-body">
+            <form class="row g-2 justify-content-center" action="/posters" method="GET">
+                <div class="col-md-8">
+                    <label for="search" class="visually-hidden">Qidiruv</label>
+                    <input 
+                        type="text" 
+                        class="form-control form-control-lg rounded-pill" 
+                        id="search" 
+                        placeholder="E'lonlar qidiruvi..."
+                        name="search"
+                        >
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary btn-lg rounded-pill px-4">Izlash</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+
+   {{/if}}
 
 </header>
 <!-- Page Content-->
@@ -52,7 +59,7 @@
         <!-- Page Features-->
     <div class="row gx-4 gy-4">
         <div class="col-md-6 col-lg-3 mb-5">
-        <a href="#" class="category-poster">
+        <a href="/posters?category=realty" class="category-poster">
             <div class="card bg-light border-0 h-100">
                 <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
                     <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"><i class="bi bi-house-door-fill"></i></div>
@@ -63,7 +70,7 @@
         </a>
     </div>
     <div class="col-md-6 col-lg-3 mb-5">
-        <a href="#" class="category-poster">
+        <a href="/posters?category=transport" class="category-poster">
             <div class="card bg-light border-0 h-100">
                 <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
                     <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"><i class="bi bi-truck"></i></div>
@@ -74,7 +81,7 @@
         </a>
     </div>
     <div class="col-md-6 col-lg-3 mb-5">
-        <a href="#" class="category-poster">
+        <a href="/posters?category=electronics" class="category-poster">
             <div class="card bg-light border-0 h-100">
                 <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
                     <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"><i class="bi bi-phone-fill"></i></div>
@@ -85,7 +92,7 @@
         </a>
     </div>
     <div class="col-md-6 col-lg-3 mb-5">
-        <a href="#" class="category-poster">
+        <a href="/posters?category=jobs" class="category-poster">
             <div class="card bg-light border-0 h-100">
                 <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
                     <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"><i class="bi bi-person-lines-fill"></i></div>
@@ -107,144 +114,41 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="row">
-               <div class="col-lg-3 text-center mb-3">
-                    <div class="card shadow-sm border-0 rounded-4">
-                        <a href="#"><img src="./assets/elon/elon1.jpg" class="card-img-top rounded-top img-fluid" style="height: 200px; object-fit: cover;" alt=""></a>
-                        <div class="card-body d-flex flex-column">
-                            <div class="poster-title-cont mb-2">
-                                <a href="#" class="poster-link text-dark text-decoration-none">
-                                    <h5 class="card-title fw-bold mb-1">Card Title</h5>
-                                </a>
+
+                {{#if posters}}
+                    {{#each posters}}   
+                        <div class="col-lg-3 text-center mb-3">
+                            <div class="card shadow-sm border-1 rounded-lg">
+                                <a href="/posters/{{_id}}"><img src="{{url}}/{{image}}" class="card-img-top rounded-top img-fluid" style="height: 300px; object-fit: cover;" alt=""></a>
+                                <div class="card-body d-flex flex-column">
+                                    <div class="poster-title-cont">
+                                        <a href="/posters/{{_id}}" class="poster-link text-dark text-decoration-none">
+                                            <h5 class="card-title fw-bold">{{title}}</h5>
+                                        </a>
+                                    </div>
+                                    <p class="card-text text-muted" style="margin: 0">{{region}}</p>
+                                    <p class="card-text text-muted">- {{formatDate createdAt}}</p>
+                                    <h5 class="card-subtitle text-primary fw-bold mt-auto">{{amount}} SO'M</h5>
+                                </div>
                             </div>
-                            <p class="card-text text-muted" style="margin: 0">Toshkent viloyati</p>
-                            <p class="card-text text-muted mb-2">- 11.07.2021 15:56</p>
-                            <h5 class="card-subtitle text-primary fw-bold mt-auto">380 000 SO'M</h5>
                         </div>
+                        {{/each}}
+                {{else}}
+                    <div class="col-lg-12 text-center">
+                        <h3 class="fw-bold">E'lonlar mavjud emas</h3>
                     </div>
-                </div>
-
-
-               <div class="col-lg-3 text-center mb-3">
-                    <div class="card shadow-sm border-0 rounded-4">
-                        <a href="#"><img src="./assets/elon/elon2.jpg" class="card-img-top rounded-top img-fluid" style="height: 200px; object-fit: cover;" alt=""></a>
-                        <div class="card-body d-flex flex-column">
-                            <div class="poster-title-cont mb-2">
-                                <a href="#" class="poster-link text-dark text-decoration-none">
-                                    <h5 class="card-title fw-bold mb-1">Card Title</h5>
-                                </a>
-                            </div>
-                            <p class="card-text text-muted" style="margin: 0">Toshkent viloyati</p>
-                            <p class="card-text text-muted mb-2">- 11.07.2021 15:56</p>
-                            <h5 class="card-subtitle text-primary fw-bold mt-auto">380 000 SO'M</h5>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <div class="col-lg-3 text-center mb-3">
-                    <div class="card shadow-sm border-0 rounded-4">
-                        <a href="#"><img src="./assets/elon/elon3.jpg" class="card-img-top rounded-top img-fluid" style="height: 200px; object-fit: cover;" alt=""></a>
-                        <div class="card-body d-flex flex-column">
-                            <div class="poster-title-cont mb-2">
-                                <a href="#" class="poster-link text-dark text-decoration-none">
-                                    <h5 class="card-title fw-bold mb-1">Card Title</h5>
-                                </a>
-                            </div>
-                            <p class="card-text text-muted" style="margin: 0">Toshkent viloyati</p>
-                            <p class="card-text text-muted mb-2">- 11.07.2021 15:56</p>
-                            <h5 class="card-subtitle text-primary fw-bold mt-auto">380 000 SO'M</h5>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 text-center mb-3">
-                    <div class="card shadow-sm border-0 rounded-4">
-                        <a href="#"><img src="./assets/elon/elon4.jpg" class="card-img-top rounded-top img-fluid" style="height: 200px; object-fit: cover;" alt=""></a>
-                        <div class="card-body d-flex flex-column">
-                            <div class="poster-title-cont mb-2">
-                                <a href="#" class="poster-link text-dark text-decoration-none">
-                                    <h5 class="card-title fw-bold mb-1">Card Title</h5>
-                                </a>
-                            </div>
-                            <p class="card-text text-muted" style="margin: 0">Toshkent viloyati</p>
-                            <p class="card-text text-muted mb-2">- 11.07.2021 15:56</p>
-                            <h5 class="card-subtitle text-primary fw-bold mt-auto">380 000 SO'M</h5>
-                        </div>
-                    </div>
-                </div>
-
-
-               <div class="col-lg-3 text-center mb-3">
-                    <div class="card shadow-sm border-0 rounded-4">
-                        <a href="#"><img src="./assets/elon/elon5.jpg" class="card-img-top rounded-top img-fluid" style="height: 200px; object-fit: cover;" alt=""></a>
-                        <div class="card-body d-flex flex-column">
-                            <div class="poster-title-cont mb-2">
-                                <a href="#" class="poster-link text-dark text-decoration-none">
-                                    <h5 class="card-title fw-bold mb-1">Card Title</h5>
-                                </a>
-                            </div>
-                            <p class="card-text text-muted" style="margin: 0">Toshkent viloyati</p>
-                            <p class="card-text text-muted mb-2">- 11.07.2021 15:56</p>
-                            <h5 class="card-subtitle text-primary fw-bold mt-auto">380 000 SO'M</h5>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-lg-3 text-center mb-3">
-                    <div class="card shadow-sm border-0 rounded-4">
-                        <a href="#"><img src="./assets/elon/elon6.jpg" class="card-img-top rounded-top img-fluid" style="height: 200px; object-fit: cover;" alt=""></a>
-                        <div class="card-body d-flex flex-column">
-                            <div class="poster-title-cont mb-2">
-                                <a href="#" class="poster-link text-dark text-decoration-none">
-                                    <h5 class="card-title fw-bold mb-1">Card Title</h5>
-                                </a>
-                            </div>
-                            <p class="card-text text-muted" style="margin: 0">Toshkent viloyati</p>
-                            <p class="card-text text-muted mb-2">- 11.07.2021 15:56</p>
-                            <h5 class="card-subtitle text-primary fw-bold mt-auto">380 000 SO'M</h5>
-                        </div>
-                    </div>
-                </div>
-
-
-               <div class="col-lg-3 text-center mb-3">
-                    <div class="card shadow-sm border-0 rounded-4">
-                        <a href="#"><img src="./assets/elon/elon7.jpg" class="card-img-top rounded-top img-fluid" style="height: 200px; object-fit: cover;" alt=""></a>
-                        <div class="card-body d-flex flex-column">
-                            <div class="poster-title-cont mb-2">
-                                <a href="#" class="poster-link text-dark text-decoration-none">
-                                    <h5 class="card-title fw-bold mb-1">Card Title</h5>
-                                </a>
-                            </div>
-                            <p class="card-text text-muted" style="margin: 0">Toshkent viloyati</p>
-                            <p class="card-text text-muted mb-2">- 11.07.2021 15:56</p>
-                            <h5 class="card-subtitle text-primary fw-bold mt-auto">380 000 SO'M</h5>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 text-center mb-3">
-                    <div class="card shadow-sm border-0 rounded-4">
-                        <a href="#"><img src="./assets/elon/elon8.jpg" class="card-img-top rounded-top img-fluid" style="height: 200px; object-fit: cover;" alt=""></a>
-                        <div class="card-body d-flex flex-column">
-                            <div class="poster-title-cont mb-2">
-                                <a href="#" class="poster-link text-dark text-decoration-none">
-                                    <h5 class="card-title fw-bold mb-1">Card Title</h5>
-                                </a>
-                            </div>
-                            <p class="card-text text-muted" style="margin: 0">Toshkent viloyati</p>
-                            <p class="card-text text-muted mb-2">- 11.07.2021 15:56</p>
-                            <h5 class="card-subtitle text-primary fw-bold mt-auto">380 000 SO'M</h5>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-auto m-auto mt-3 mb-5">
-                    <a href="/posters" type="button" class="btn btn-outline-secondary btn-lg mb-3">Barcha e'lonlar...</a>
-                </div>
+                {{/if}}
             </div>
+
+            {{#if posters}}
+                <div class="row">
+                    <div class="col text-center my-4">
+                        <a href="/posters" class="btn btn-outline-secondary btn-lg">
+                            Barcha e'lonlar
+                        </a>
+                    </div>
+                </div>
+            {{/if}}
         </div>
     </div>
 </div>
