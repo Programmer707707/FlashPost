@@ -16,7 +16,7 @@
             <p class="text-muted" style="font-size: 1.1rem;">
                 Bu sayt orqali siz o'z e'lonlaringizni bepul joylashtirib borishingiz mumkin. Istalgan kategoriyangizni tanlang va e'loningizni joylashtiring.
             </p>
-            <a class="btn btn-primary btn-lg px-4 rounded-pill mt-3" href="#!">E'lon joylashtirish</a>
+            <a class="btn btn-primary btn-lg px-4 rounded-pill mt-3" href="posters/add">E'lon joylashtirish</a>
         </div>
     </div>
 
@@ -27,10 +27,16 @@
     
    <div class="card my-5 py-4 text-center shadow-sm border-0 rounded-4">
     <div class="card-body">
-        <form class="row g-2 justify-content-center">
+        <form class="row g-2 justify-content-center" action="/posters" method="GET">
             <div class="col-md-8">
                 <label for="search" class="visually-hidden">Qidiruv</label>
-                <input type="text" class="form-control form-control-lg rounded-pill" id="search" placeholder="E'lonlar qidiruvi...">
+                <input 
+                    type="text" 
+                    class="form-control form-control-lg rounded-pill" 
+                    id="search" 
+                    placeholder="E'lonlar qidiruvi..."
+                    name="search"
+                    >
             </div>
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary btn-lg rounded-pill px-4">Izlash</button>
@@ -236,7 +242,7 @@
                 </div>
 
                 <div class="col-auto m-auto mt-3 mb-5">
-                    <button type="submit" class="btn btn-outline-secondary btn-lg mb-3">Barcha e'lonlar...</button>
+                    <a href="/posters" type="button" class="btn btn-outline-secondary btn-lg mb-3">Barcha e'lonlar...</a>
                 </div>
             </div>
         </div>

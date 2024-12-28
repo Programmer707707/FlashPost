@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const exphbs = require('express-handlebars').create;
+const HandleBars = require('handlebars');
 const session = require('express-session');
 const MongoStore = require('connect-mongodb-session')(session);
 const homeRouter = require('./routes/homeRoutes');
@@ -12,6 +13,8 @@ const authRouter = require('./routes/authRoutes');
 const profileRouter = require('./routes/profileRoutes');
 const connectDB = require('./config/db');
 const multer = require('multer');
+const flash = require('connect-flash');
+const hbsHelpers = require('./utils/hbsHelpers');
 
 // Initializing express
 const app = express();
@@ -27,13 +30,18 @@ store.on('error', function(error) {
 });
 
 
-
+// Middlewares are integrated below
+app.use(flash());
 // To read Request body
 app.use(express.json());
 app.use(express.urlencoded({extended: false})); // this is used with server-rendered pages like exp-handlebars
 
 // Connecting Frontend
 app.use(express.static('public'))
+
+
+//register handlebars helpers
+hbsHelpers(HandleBars);
 
 // Session configuration
 app.use(session({

@@ -8,6 +8,7 @@ const posterSchema = new Schema({
     description: {type: String, required: true, min:10},
     isActive: {type: Boolean, required: true, default: true},
     visits: {type: Number, default: 1},
+    author: {type: Schema.Types.ObjectId, ref: 'User'}
 })
 
 module.exports = model("Poster", posterSchema);

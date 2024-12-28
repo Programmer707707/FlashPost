@@ -5,20 +5,26 @@ const bcrypt = require('bcrypt');
 //@desc         Get login page
 //@access       Public
 const getLoginPage = (req,res) =>{
-    res.render('auth/login', {
-        title: 'Login',
-        url: process.env.URL
-    })
+    if(!req.session.isLogged){
+        res.render('auth/login', {
+            title: 'Login',
+            loginError: req.flash('loginError'),
+            url: process.env.URL
+        })
+    }
 }
 
 //@route        GET auth/register
 //@desc         Get register page
 //@access       Public
 const getRegisterPage = (req,res) =>{
+   if(!req.session.isLogged){
     res.render('auth/signup', {
         title: "Ro'yxatdan o'tish",
+        regError: req.flash('regError'),
         url: process.env.URL
     })
+   }
 }
 
 
@@ -33,10 +39,12 @@ const registerNewUser = async(req,res)=>{
         const userExist = await User.findOne({email})
 
         if(userExist){
+            req.flash('regError', "Bunday foydalanuvchi bazada mavjud 🪪");
             return res.redirect('/auth/signup');
         }
 
         if(password !== password2){
+            req.flash('regError', "Parollar bir xil emas 🔑");
             return res.redirect('/auth/signup');
         }
 
@@ -76,9 +84,11 @@ const loginUser = async (req, res) => {
                     return res.redirect('/profile/' + req.session.user.username);
                 });
             } else {
+                req.flash('loginError', "Noto'g'ri ma'lumot kiritildi ❌");
                 res.redirect('/auth/login');
             }
         } else {
+            req.flash('loginError', "Bunday foydalanuvchi mavjud emas ❌");
             res.redirect('/auth/login');
         }
     } catch (err) {
@@ -87,6 +97,16 @@ const loginUser = async (req, res) => {
 };
 
 
+//@route        GET auth/logout
+//@desc         Logout user
+//@access       Private
+const logoutUser = (req, res) => {
+    req.session.destroy(err => {
+        if (err) throw err;
+        res.redirect('/');
+    });
+};
 
 
-module.exports = {getLoginPage, getRegisterPage, registerNewUser, loginUser};
+
+module.exports = {getLoginPage, getRegisterPage, registerNewUser, loginUser, logoutUser};
