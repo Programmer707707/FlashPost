@@ -35,8 +35,29 @@ store.on('error', function(error) {
 // Middlewares are integrated below
 app.use(flash());
 
+// Styling doesn't work but hamburger icon works
+
 // Integrate helmet for security
-app.use(helmet());
+// app.use(helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         defaultSrc: ["'self'"],
+//         scriptSrc: [
+//           "'self'",
+//           "https://cdn.jsdelivr.net",
+//           "https://maxcdn.bootstrapcdn.com"
+//         ],
+//         styleSrc: ["'self'", "https://cdn.jsdelivr.net"],
+//         fontSrc: ["'self'", "https://cdn.jsdelivr.net"],
+//       },
+//     },
+//   })
+// );
+
+// Styling works but hamburger icon doesn't
+//app.use(helmet());
+
+
 
 // Integrate compression
 app.use(compression());
