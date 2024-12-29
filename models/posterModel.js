@@ -10,7 +10,7 @@ const posterSchema = new Schema({
     isActive: {type: Boolean, required: true, default: true},
     visits: {type: Number, default: 1},
     author: {type: Schema.Types.ObjectId, ref: 'User'},
-})
+}, {timestamps: true});
 
 //Creating indexes
 posterSchema.index({"title": "text", "description": "text"})

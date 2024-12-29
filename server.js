@@ -15,6 +15,8 @@ const connectDB = require('./config/db');
 const multer = require('multer');
 const flash = require('connect-flash');
 const hbsHelpers = require('./utils/hbsHelpers');
+const helmet = require('helmet');
+const compression = require('compression');
 
 // Initializing express
 const app = express();
@@ -32,6 +34,13 @@ store.on('error', function(error) {
 
 // Middlewares are integrated below
 app.use(flash());
+
+// Integrate helmet for security
+app.use(helmet());
+
+// Integrate compression
+app.use(compression());
+
 // To read Request body
 app.use(express.json());
 app.use(express.urlencoded({extended: false})); // this is used with server-rendered pages like exp-handlebars
@@ -56,7 +65,10 @@ connectDB()
 
 
 // Configuring the engine
-const hbs = exphbs({ extname: '.hbs'});
+const hbs = exphbs({ extname: '.hbs', helpers: {
+    equal: (a,b)=> a.toString() === b.toString(),
+    notEqual: (a,b)=> a.toString() !== b.toString()
+}});
 app.engine('.hbs', hbs.engine);
 app.set('view engine', '.hbs')
 

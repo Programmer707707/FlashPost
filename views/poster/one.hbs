@@ -53,8 +53,12 @@
             </div>
             <a href="#" type="button" class="btn btn-outline-secondary">{{author.phone}}</a>
             <a href="/profile/{{author.username}}" type="button" class="btn mt-3 btn-success">Muallifning boshqa e'lonlari</a>
-            <a href="/posters/{{poster._id}}/edit" type="button" class="btn mt-3 btn-warning">E'lonni tahrirlash</a>
-            <a href="/posters/{{poster._id}}/delete" type="button" class="btn mt-3 btn-danger">O'chirish</a>
+            {{#if user}}
+              {{#if (equal user._id author._id)}}
+              <a href="/posters/{{poster._id}}/edit" type="button" class="btn mt-3 btn-primary">E'lonni tahrirlash</a>
+              <a href="/posters/{{poster._id}}/delete" type="button" class="btn mt-3 btn-danger">E'lonni o'chirish</a>
+              {{/if}}
+            {{/if}}
           </div>
         </div>
       </div>

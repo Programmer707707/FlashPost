@@ -8,6 +8,17 @@ const filtering = require('../utils/filtering');
 //@access       Public
 const getPosters = async (req,res) => {
     try{
+        const pageLimit = 10;
+        const limit = Number(req.query.limit);
+        const page = Number(req.query.page);
+        const total = await Poster.countDocuments();
+      
+        //Redirect if queries [page,limit] don't exist
+        if(req.url == '/'){
+            return res.redirect(`?page=1&limit=${pageLimit}`);
+        }
+
+
         if(req.query.search){
             const {search} = req.query;
             const posters = await Poster.searchPartial(search); 
@@ -21,7 +32,7 @@ const getPosters = async (req,res) => {
             })
         }
 
-        if(req.query){
+        if(Object.keys(req.query).length > 0 && (req.query.category || req.query.from || req.query.to || req.query.region)){
             const {category, from, to, region} = req.query;
             const filterings = filtering(category, from, to, region);
             const posters = await Poster.find(filterings).lean();
@@ -34,10 +45,18 @@ const getPosters = async (req,res) => {
             })
         }
 
-
-        const posters = await Poster.find().lean() // .lean() for security used only in handlebars
+        const posters = await Poster
+        .find()
+        .skip((page-1)*limit)
+        .limit(limit)
+        .lean() 
         return res.render('poster/posters', {
             title: 'Poster Page',
+            pagination: {
+                page,
+                limit,
+                pageCount: Math.ceil(total/pageLimit),
+            },
             posters: posters.reverse(),
             user: req.session.user,
             url: process.env.URL,
@@ -95,6 +114,7 @@ const addNewPoster = async (req,res) => {
             title: req.body.title,
             amount: req.body.amount,
             region: req.body.region,
+            category: req.body.category,
             description: req.body.description,
             image: 'uploads/' + req.file.filename,
             author: req.session.user._id
@@ -140,6 +160,7 @@ const updatePosterById = async (req,res) =>{
         amount: req.body.amount,
         image: req.body.image,
         region: req.body.region,
+        category: req.body.category,
         description: req.body.description,
     }
     await Poster.findByIdAndUpdate(req.params.id, editedPost)

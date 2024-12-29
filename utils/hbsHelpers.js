@@ -6,6 +6,8 @@ const hbsHelpers = (handlebars) => {
             moment(dateString).format('DD.MM.YYYY').toUpperCase()
         );
     })
+
+    handlebars.registerHelper('paginate', require('handlebars-paginate'));
 }
 
 module.exports = hbsHelpers;
